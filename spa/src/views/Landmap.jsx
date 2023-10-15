@@ -2,28 +2,28 @@
 import React, { useRef, useState, useEffect, useContext } from "react"
 import { fromLonLat, toLonLat, get } from "ol/proj";
 import Map from '../components/Map'
-import { MapContextProvider, MapContext } from "../contexts/MapContext";
+import { MapContextProvider, useMapContext } from "../contexts/MapContext";
 
 import {PauseCircleIcon, PlusCircleIcon} from '@heroicons/react/24/outline';
-
+import {PauseCircleIcon as PauseCircleIconSolid, PlusCircleIcon as PlusCircleIconSolid} from '@heroicons/react/24/solid';
 import api from '../api';
 
 const center = [37.5, 55.7];
 const zoom = 10;
 
 const Landmap = () => {
+    const { map, mapMode, setMode } = useMapContext();
 
-  const { map } = useContext(MapContext);
-  var viewport;
+    var viewport;
 
-  useEffect(() => {
-      if (!map || Object.keys(map).length == 0 ) return;
+    const onGenerateFleet = () => {
+      api.generateFleet(10, viewport);
+    }
 
-  });
-
-  const onGenerateFleet = () => {
-    api.generateFleet(10, viewport);
-  }
+    const onPointAddMode = () => {
+      if (!map || Object.keys(map).length == 0) return;
+      setMode(!mapMode);
+    }
 
     return (
           <>
@@ -52,14 +52,14 @@ const Landmap = () => {
                 <button
                   type="button"
                   className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                  onClick={()=> onPointAddMode()}
                 >
                   <span className="sr-only">Add point</span>
-                  <PlusCircleIcon className="h-6 w-6" aria-hidden="true" />
+                  {mapMode ? <PlusCircleIconSolid className="h-6 w-6" aria-hidden="true" /> : <PlusCircleIcon className="h-6 w-6" aria-hidden="true" /> }
                 </button>
               </div>
-              <MapContextProvider>
-              <Map center={fromLonLat(center)} zoom={zoom} />
-              </MapContextProvider>
+
+              <Map center={fromLonLat(center)} zoom={zoom} mapMode={mapMode}/>
             </div>
           </main>
           </>
