@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`,
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}/spa`,
+//  baseURL: `${import.meta.env.BASE_URL}/api`,
+//  baseURL: `/api`,
 });
 
 // axiosClient.interceptors.request.use((config) => {
@@ -20,6 +22,8 @@ const axiosClient = axios.create({
 //   throw error;
 // })
 
+
+//http://wb.loc:8080/spa/PauseFleet
 class Api {
   pause = async () => {
     const res = await axiosClient.post('/pause-fleet');
