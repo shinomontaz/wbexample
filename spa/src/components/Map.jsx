@@ -14,6 +14,8 @@ import {unByKey} from "ol/Observable";
 import { toLonLat, transformExtent } from "ol/proj";
 import {toStringHDMS} from 'ol/coordinate.js';
 
+import api from '../api';
+
 export default function Map({ children, zoom, center, mapMode }) {
     const mapRef = useRef();
 
@@ -59,10 +61,9 @@ export default function Map({ children, zoom, center, mapMode }) {
     }, [mapMode]);
 
     const onSingleClick = ( evt ) => {
-     console.log("handleSingleClick "+mapMode)
      if (mapMode) {
        const coord = toLonLat(evt.coordinate);
-       console.log('map singleclick ' + JSON.stringify(coord) + " " + JSON.stringify(mapMode));
+       api.addPoint(coord);
      }
    }
 

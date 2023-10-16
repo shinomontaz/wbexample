@@ -31,6 +31,7 @@ class Api {
   }
 
   addPoint = async (location) => {
+//    console.log(KSON.stringify(location))
     const res = await axiosClient.post('/add-point', {location});
     return await res.json();
   }
