@@ -2,8 +2,6 @@ import axios from "axios";
 
 const axiosClient = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/spa`,
-//  baseURL: `${import.meta.env.BASE_URL}/api`,
-//  baseURL: `/api`,
 });
 
 // axiosClient.interceptors.request.use((config) => {
@@ -25,6 +23,20 @@ const axiosClient = axios.create({
 
 //http://wb.loc:8080/spa/PauseFleet
 class Api {
+  getPoints = async () => {
+    console.log("get points!");
+    const res = await axiosClient.get('/points');
+    return await res.json();
+  }
+  getTrucks = async () => {
+    const res = await axiosClient.get('/trucks');
+    return await res.json();
+  }
+  getPositions = async () => {
+    const res = await axiosClient.get('/positions');
+    return await res.json();
+  }
+
   pause = async () => {
     const res = await axiosClient.post('/pause-fleet');
     return await res.json();

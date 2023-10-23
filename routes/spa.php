@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Spa\LoginController;
 use App\Http\Controllers\Spa\CommandsController;
+use App\Http\Controllers\Spa\DataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,10 @@ Route::controller(CommandsController::class)->group(function(){
     Route::post('pause-fleet', 'PauseFleet')->name('pause-fleet');
     Route::post('add-point', 'AddPoint')->name('add-point');
     Route::post('generate-fleet', 'GenerateFleet')->name('generate-fleet');
+});
+
+Route::controller(DataController::class)->group(function(){
+    Route::get('trucks', 'GetTrucks')->name('trucks');
+    Route::get('points', 'GetPoints')->name('points');
+    Route::get('positions', 'GetPositions')->name('positions');
 });

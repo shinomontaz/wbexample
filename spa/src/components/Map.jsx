@@ -19,7 +19,7 @@ import api from '../api';
 export default function Map({ children, zoom, center, mapMode }) {
     const mapRef = useRef();
 
-    const { map, setMap } = useMapContext();
+    const { map, setMap, points, trucks, positions } = useMapContext();
     const [currClickId, setClickId ] = useState(null);
 
     useEffect(() => {
@@ -59,6 +59,21 @@ export default function Map({ children, zoom, center, mapMode }) {
       const newClickId = map.on('singleclick',  onSingleClick);
       setClickId(newClickId);
     }, [mapMode]);
+
+    useEffect(() => {
+      if (!map) return;
+      console.log("positions changed! " + JSON.stringify(positions))
+    }, [positions]);
+
+    useEffect(() => {
+      if (!map) return;
+      console.log("trucks changed! " + JSON.stringify(trucks))
+    }, [trucks]);
+
+    useEffect(() => {
+      if (!map) return;
+      console.log("points changed! " + JSON.stringify(points))
+    }, [points]);
 
     const onSingleClick = ( evt ) => {
      if (mapMode) {

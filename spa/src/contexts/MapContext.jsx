@@ -8,11 +8,21 @@ const MapContext = createContext({
   setMap: () => {},
   mapMode: false,
   setMode: () => {},
+  points: [],
+  trucks: [],
+  positions: null,
+  setPoints: () => {},
+  setTrucks: () => {},
+  setPositions: () => {},
 });
 
 export const MapContextProvider = ({ children }) => {
   const [map, setMap] = useState(null);
   const [mapMode, setMode] = useState(false);
+
+  const [points, setPoints] = useState([]);
+  const [trucks, setTrucks] = useState([]);
+  const [positions, setPositions] = useState([]);
 
   return (
    <MapContext.Provider
@@ -20,7 +30,13 @@ export const MapContextProvider = ({ children }) => {
        map,
        setMap,
        mapMode,
-       setMode
+       setMode,
+       points,
+       trucks,
+       positions,
+       setPoints,
+       setTrucks,
+       setPositions,
      }}
    >
      {children}
