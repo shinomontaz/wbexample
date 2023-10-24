@@ -12,9 +12,7 @@ const center = [37.5, 55.7];
 const zoom = 10;
 
 const Landmap = () => {
-    const { map, mapMode, setMode } = useMapContext();
-
-    var viewport;
+    const { map, viewport, mapMode, setMode } = useMapContext();
 
     const onPauseFleet = () => {
       api.pause();

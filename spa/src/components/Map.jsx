@@ -19,7 +19,7 @@ import api from '../api';
 export default function Map({ children, zoom, center, mapMode }) {
     const mapRef = useRef();
 
-    const { map, setMap, points, trucks, positions } = useMapContext();
+    const { map, setMap, setViewport, points, trucks, positions } = useMapContext();
     const [currClickId, setClickId ] = useState(null);
 
     useEffect(() => {
@@ -40,6 +40,8 @@ export default function Map({ children, zoom, center, mapMode }) {
    		let mapObject = new ol.Map(options);
 
       var viewport = transformExtent( mapObject.getView().calculateExtent(mapObject.getSize()), 'EPSG:3857', 'EPSG:4326' );
+      setViewport(viewport);
+      console.log(viewport);
 
    		mapObject.setTarget(mapRef.current);
 

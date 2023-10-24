@@ -5,6 +5,7 @@ import {createContext, useState, useContext, React} from "react";
 
 const MapContext = createContext({
   map: null,
+  viewport: null,
   setMap: () => {},
   mapMode: false,
   setMode: () => {},
@@ -19,6 +20,7 @@ const MapContext = createContext({
 export const MapContextProvider = ({ children }) => {
   const [map, setMap] = useState(null);
   const [mapMode, setMode] = useState(false);
+  const [viewport, setViewport] = useState(null);
 
   const [points, setPoints] = useState([]);
   const [trucks, setTrucks] = useState([]);
@@ -29,6 +31,8 @@ export const MapContextProvider = ({ children }) => {
      value={{
        map,
        setMap,
+       viewport,
+       setViewport,
        mapMode,
        setMode,
        points,
