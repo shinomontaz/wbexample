@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\JsonController as JsonController;
 
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class DataController extends JsonController {
     
@@ -20,21 +20,33 @@ class DataController extends JsonController {
      */
     public function GetTrucks(Request $request)
     {
-        $jtrucks = Cache::get('trucks', json_encode([]));
+        if (!Redis::exists('trucks')) {
+            $jtrucks = json_encode('[]');
+        } else {
+            $jtrucks = Redis::get('trucks');
+        }
         $trucks = json_decode($jtrucks, true);
         return $this->sendResponse($trucks);
     }
     
     public function GetPoints(Request $request)
     {
-        $jpoints = Cache::get('points', json_encode([]));
+        if (!Redis::exists('points')) {
+            $jpoints = json_encode('[]');
+        } else {
+            $jpoints = Redis::get('points');
+        }
         $points = json_decode($jpoints, true);
         return $this->sendResponse($points);
     }
     
     public function GetPositions(Request $request)
     {
-        $jpositions = Cache::get('positions', json_encode([]));
+        if (!Redis::exists('positions')) {
+            $jpositions = json_encode('[]');
+        } else {
+            $jpositions = Redis::get('positions');
+        }
         $positions = json_decode($jpositions, true);
         return $this->sendResponse($positions);
     }

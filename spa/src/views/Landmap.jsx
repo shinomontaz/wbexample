@@ -4,7 +4,7 @@ import { fromLonLat, toLonLat, get } from "ol/proj";
 import Map from '../components/Map'
 import { MapContextProvider, useMapContext } from "../contexts/MapContext";
 
-import {PauseCircleIcon, PlusCircleIcon} from '@heroicons/react/24/outline';
+import {PauseCircleIcon, PlusCircleIcon, ArrowPathIcon} from '@heroicons/react/24/outline';
 import {PauseCircleIcon as PauseCircleIconSolid, PlusCircleIcon as PlusCircleIconSolid} from '@heroicons/react/24/solid';
 import api from '../api';
 
@@ -12,10 +12,21 @@ const center = [37.5, 55.7];
 const zoom = 10;
 
 const Landmap = () => {
-    const { map, viewport, mapMode, setMode } = useMapContext();
+    const { map, viewport, mapMode, setMode, setPoints } = useMapContext();
 
     const onPauseFleet = () => {
       api.pause();
+    }
+
+    const onUpdate = async () => {
+      await api.getPoints( ).then( (points) => {
+          console.log( "Points received: " + JSON.stringify(points) );
+          setPoints(points);
+        }
+      ).catch( (err) => {
+        console.log( "getPoints exception " + JSON.stringify(err) );
+        }
+      );
     }
 
     const onGenerateFleet = () => {
@@ -49,7 +60,7 @@ const Landmap = () => {
                   className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
                   onClick={()=> onPauseFleet()}
                 >
-                  <span className="sr-only">Open main menu</span>
+                  <span className="sr-only">Pause fleet</span>
                   <PauseCircleIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
                 <button
@@ -59,6 +70,14 @@ const Landmap = () => {
                 >
                   <span className="sr-only">Add point</span>
                   {mapMode ? <PlusCircleIconSolid className="h-6 w-6" aria-hidden="true" /> : <PlusCircleIcon className="h-6 w-6" aria-hidden="true" /> }
+                </button>
+                <button
+                  type="button"
+                  className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                  onClick={()=> onUpdate()}
+                >
+                  <span className="sr-only">Update</span>
+                  <ArrowPathIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
 

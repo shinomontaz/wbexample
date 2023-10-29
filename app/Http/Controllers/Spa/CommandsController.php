@@ -18,7 +18,6 @@ use App\Http\Controllers\JsonController as JsonController;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
-//use Illuminate\Support\Facades\Cache;
 
 class CommandsController extends JsonController {
     private $mqService;

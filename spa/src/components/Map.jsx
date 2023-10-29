@@ -4,14 +4,17 @@ import * as ol from "ol";
 import TileLayer from "ol/layer/Tile";
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import Feature from 'ol/Feature';
+import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
 
+import {Point, Polygon} from 'ol/geom';
 import {defaults as defaultControls} from 'ol/control.js';
 import OSMSource from "ol/source/OSM";
 import { useMapContext } from "../contexts/MapContext";
 
 import {unByKey} from "ol/Observable";
 
-import { toLonLat, transformExtent } from "ol/proj";
+import { transform, fromLonLat, toLonLat, transformExtent } from "ol/proj";
 import {toStringHDMS} from 'ol/coordinate.js';
 
 import api from '../api';
@@ -19,10 +22,11 @@ import api from '../api';
 export default function Map({ children, zoom, center, mapMode }) {
     const mapRef = useRef();
 
-    const { map, setMap, setViewport, points, trucks, positions } = useMapContext();
+    const { map, setMap, vecSource, setVecSource, setViewport, points, trucks, positions } = useMapContext();
     const [currClickId, setClickId ] = useState(null);
 
     useEffect(() => {
+      let sVec = new VectorSource();
    		let options = {
    			view: new ol.View({ zoom, center }),
    			layers: [
@@ -30,7 +34,7 @@ export default function Map({ children, zoom, center, mapMode }) {
             source: new OSMSource()
           }),
           new VectorLayer({
-            source: new VectorSource()
+            source: sVec
           }),
         ],
    			controls: [],
@@ -45,6 +49,7 @@ export default function Map({ children, zoom, center, mapMode }) {
 
    		mapObject.setTarget(mapRef.current);
 
+      setVecSource(sVec);
       setMap(mapObject);
 
    		return () => mapObject.setTarget(undefined);
@@ -74,7 +79,26 @@ export default function Map({ children, zoom, center, mapMode }) {
 
     useEffect(() => {
       if (!map) return;
-      console.log("points changed! " + JSON.stringify(points))
+      console.log("points changed! " + JSON.stringify(points));
+
+      points.map( p => {
+        let feature = new Feature({
+            // long, lat according to specification
+            geometry: new Point( transform([p.Long,  p.Lat], 'EPSG:4326', 'EPSG:3857')),
+            id  : p.Id,
+            style: new Style({
+    image: new CircleStyle({
+      radius: 10,
+      fill: null,
+      stroke: new Stroke({
+        color: "magenta",
+      }),
+    }),
+  }),
+        });
+        feature.setId( p.id );
+        vecSource.addFeature(feature);
+      });
     }, [points]);
 
     const onSingleClick = ( evt ) => {

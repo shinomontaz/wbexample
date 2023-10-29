@@ -24,34 +24,34 @@ const axiosClient = axios.create({
 //http://wb.loc:8080/spa/PauseFleet
 class Api {
   getPoints = async () => {
-    console.log("get points!");
     const res = await axiosClient.get('/points');
-    return await res.json();
+    console.log("res: " + JSON.stringify(res));
+    return res.data.data;
   }
   getTrucks = async () => {
     const res = await axiosClient.get('/trucks');
-    return await res.json();
+    return await res.data;
   }
   getPositions = async () => {
     const res = await axiosClient.get('/positions');
-    return await res.json();
+    return await res.data;
   }
 
   pause = async () => {
     const res = await axiosClient.post('/pause-fleet');
-    return await res.json();
+    return await res.data;
   }
 
   addPoint = async (location) => {
 //    console.log(KSON.stringify(location))
     const res = await axiosClient.post('/add-point', {location});
-    return await res.json();
+    return await res.data;
   }
 
   generateFleet = async (num, square) => {
     console.log("generateFleet: " + JSON.stringify(square));
     const res = await axiosClient.post('/generate-fleet', {num, square});
-    return await res.json();
+    return await res.data;
   }
 }
 
