@@ -1,7 +1,7 @@
 package common
 
 type Message struct {
-	T int `json: "type"`
+	Type int `json: "type"`
 }
 
 type MessageAddPoint struct {
@@ -15,4 +15,10 @@ type MessageGenerateFleet struct {
 
 type MessagePause struct {
 	//	area float64 `json: "lat"`
+}
+
+type Point struct {
+	Id   int     `json: id`
+	Lat  float64 `json: "lat"`
+	Long float64 `json: "long"`
 }

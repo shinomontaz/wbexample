@@ -7,7 +7,7 @@ import (
 
 type Rabbit struct {
 	Host        string `env:"RABBIT_HOST" envDefault:"127.0.0.1"`
-	Port        int    `env:"RABBIT_PORT" envDefault:5672`
+	Port        int    `env:"RABBIT_PORT" envDefault:"5672"`
 	User        string `env:"RABBIT_USER" envDefault:"user"`
 	Pass        string `env:"RABBIT_PASS" envDefault:"qwe"`
 	Vhost       string `env:"RABBIT_VHOST" envDefault:"/"`
@@ -16,7 +16,7 @@ type Rabbit struct {
 
 type Redis struct {
 	Host string `env:"REDIS_HOST" envDefault:"127.0.0.1"`
-	Port int    `env:"REDIS_PORT" envDefault:6379`
+	Port int    `env:"REDIS_PORT" envDefault:"6379"`
 	Db   int    `env:"REDIS_DB" envDefault:1`
 }
 
@@ -34,6 +34,7 @@ func (l *Level) UnmarshalText(text []byte) error {
 	if ll, ok = LogLevelMapping[string(text)]; !ok {
 		ll = uint32(logrus.DebugLevel)
 	}
+
 	*l = Level(ll)
 	return nil
 }

@@ -17,6 +17,8 @@ use \App\Services\RabbitMQService;
 use App\Http\Controllers\JsonController as JsonController;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
+//use Illuminate\Support\Facades\Cache;
 
 class CommandsController extends JsonController {
     private $mqService;
@@ -32,6 +34,10 @@ class CommandsController extends JsonController {
      */
     public function PauseFleet(Request $request)
     {
+        //key here will be a "laravel_database_points"
+        Redis::set('points', json_encode([ 
+            ['id' => 211268, 'lat' => 55.547815000, 'long' => 37.550307000]
+        ]));
         $message = [
             'type' => 1,
         ];
@@ -40,6 +46,7 @@ class CommandsController extends JsonController {
     
     public function AddPoint(Request $request)
     {
+        //{location: [37.313919067382805, 55.879899669135995]}
 //        Log::info( print_r($request->location, true) );
         $message = [
             'type' => 2,
@@ -51,14 +58,22 @@ class CommandsController extends JsonController {
     
     public function GenerateFleet(Request $request)
     {
+        //{num: 10, square: [37.43133544921874, 55.661286579672606, 37.56866455078125, 55.73867511243941]}
         $message = [
             'type' => 3,
+            'num' => $request->num,
+            'area' => [
+                'min' => [ $request->square[0], $request->square[1]],
+                'max' => [ $request->square[2], $request->square[3]]
+            ]
         ];
         return $this->_sendMessage($message);
     }
     
     private function _sendMessage($message): JsonResponse {
         $message = json_encode($message);
+        print_r($message);
+        die();
         try {
             $this->mqService->publish($message, 'wb', 'cmd');
         } catch ( \Exception $e ) {

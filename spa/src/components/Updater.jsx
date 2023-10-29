@@ -13,20 +13,20 @@ export const Updater = () => {
     const { points, setPoints, setTrucks, setPositions } = useMapContext();
 
     useEffect(() => {
-      const newintervalPointsId = setInterval(getPoints, 2000);
-      setTrucksInterval( newintervalPointsId );
-
-      const newintervalTrucksId = setInterval(getTrucks, 2000);
-      setPointsInterval( newintervalTrucksId );
-
-      const newintervalPositionsId = setInterval(getPositions, 1000);
-      setPositionsInterval( newintervalPositionsId );
-
-      return () => {
-        clearInterval(intervalPointsId);
-        clearInterval(intervalTrucksId);
-        clearInterval(intervalPositionsId);
-      };
+      // const newintervalPointsId = setInterval(getPoints, 2000);
+      // setTrucksInterval( newintervalPointsId );
+      //
+      // const newintervalTrucksId = setInterval(getTrucks, 2000);
+      // setPointsInterval( newintervalTrucksId );
+      //
+      // const newintervalPositionsId = setInterval(getPositions, 1000);
+      // setPositionsInterval( newintervalPositionsId );
+      //
+      // return () => {
+      //   clearInterval(intervalPointsId);
+      //   clearInterval(intervalTrucksId);
+      //   clearInterval(intervalPositionsId);
+      // };
    	}, []);
 
     const getPoints = async () => {
