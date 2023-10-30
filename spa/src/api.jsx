@@ -41,6 +41,11 @@ class Api {
     const res = await axiosClient.post('/pause-fleet');
     return await res.data;
   }
+  
+  start = async () => {
+    const res = await axiosClient.post('/start-fleet');
+    return await res.data;
+  }
 
   addPoint = async (location) => {
 //    console.log(KSON.stringify(location))

@@ -43,6 +43,14 @@ class CommandsController extends JsonController {
         return $this->_sendMessage($message);
     }
     
+    public function StartFleet(Request $request)
+    {
+        $message = [
+            'type' => 4,
+        ];
+        return $this->_sendMessage($message);
+    }
+    
     public function AddPoint(Request $request)
     {
         //{location: [37.313919067382805, 55.879899669135995]}
@@ -58,6 +66,7 @@ class CommandsController extends JsonController {
     public function GenerateFleet(Request $request)
     {
         //{num: 10, square: [37.43133544921874, 55.661286579672606, 37.56866455078125, 55.73867511243941]}
+        //long: 37.43133544921874, lat: 55.661286579672606
         $message = [
             'type' => 3,
             'num' => $request->num,

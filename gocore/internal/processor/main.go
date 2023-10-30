@@ -4,16 +4,21 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"ws-core/internal/common"
 
 	"github.com/redis/go-redis/v9"
 	"github.com/sirupsen/logrus"
 )
 
-var rDb *redis.Client
+var (
+	rDb *redis.Client
+	rs  *rand.Rand
+)
 
-func Init(client *redis.Client) {
+func Init(client *redis.Client, source *rand.Rand) {
 	rDb = client
+	rs = source
 }
 
 func Do(m common.Message, orig []byte) error {

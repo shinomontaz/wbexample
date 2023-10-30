@@ -12,7 +12,7 @@ import (
 
 const KEY_POINTS string = "laravel_database_points"
 
-var counter int
+var wh_counter int
 
 func AddPoint(m common.MessageAddPoint, ctx context.Context) error {
 	//{"type":2,"long":37.32421874999999,"lat":55.76727004496223}
@@ -32,7 +32,7 @@ func AddPoint(m common.MessageAddPoint, ctx context.Context) error {
 	}
 
 	pts = append(pts, common.Point{
-		Id:   counter,
+		Id:   wh_counter,
 		Lat:  m.Lat,
 		Long: m.Long,
 	})
@@ -41,7 +41,7 @@ func AddPoint(m common.MessageAddPoint, ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	counter += 1
+	wh_counter += 1
 	err = rDb.Set(ctx, KEY_POINTS, string(jpts), 0).Err()
 	return err
 }

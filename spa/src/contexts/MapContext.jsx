@@ -7,8 +7,10 @@ const MapContext = createContext({
   map: null,
   viewport: null,
   setMap: () => {},
-  vecSource: null,
-  setVecSource: () => {},
+  sourceWh: null,
+  setWhSource: () => {},
+  sourceCar: null,
+  setCarSource: () => {},
   mapMode: false,
   setMode: () => {},
   points: [],
@@ -21,7 +23,8 @@ const MapContext = createContext({
 
 export const MapContextProvider = ({ children }) => {
   const [map, setMap] = useState(null);
-  const [vecSource, setVecSource] = useState(null);
+  const [sourceWh, setWhSource] = useState(null);
+  const [sourceCar, setCarSource] = useState(null);
   const [mapMode, setMode] = useState(false);
   const [viewport, setViewport] = useState(null);
 
@@ -34,8 +37,10 @@ export const MapContextProvider = ({ children }) => {
      value={{
        map,
        setMap,
-       vecSource,
-       setVecSource,
+       sourceWh,
+       setWhSource,
+       sourceCar,
+       setCarSource,
        viewport,
        setViewport,
        mapMode,

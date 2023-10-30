@@ -5,7 +5,7 @@ import TileLayer from "ol/layer/Tile";
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
-import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
+import { Circle, Fill, Stroke, Text, Style } from "ol/style";
 
 import {Point, Polygon} from 'ol/geom';
 import {defaults as defaultControls} from 'ol/control.js';
@@ -17,16 +17,18 @@ import {unByKey} from "ol/Observable";
 import { transform, fromLonLat, toLonLat, transformExtent } from "ol/proj";
 import {toStringHDMS} from 'ol/coordinate.js';
 
+import style from "../styles";
 import api from '../api';
 
 export default function Map({ children, zoom, center, mapMode }) {
     const mapRef = useRef();
 
-    const { map, setMap, vecSource, setVecSource, setViewport, points, trucks, positions } = useMapContext();
+    const { map, setMap, sourceWh, setWhSource, sourceCar, setCarSource, setViewport, points, trucks, positions } = useMapContext();
     const [currClickId, setClickId ] = useState(null);
 
     useEffect(() => {
-      let sVec = new VectorSource();
+      let sWhVec = new VectorSource();
+      let sCarVec = new VectorSource();
    		let options = {
    			view: new ol.View({ zoom, center }),
    			layers: [
@@ -34,7 +36,32 @@ export default function Map({ children, zoom, center, mapMode }) {
             source: new OSMSource()
           }),
           new VectorLayer({
-            source: sVec
+            source: sWhVec,
+            style: (feature) => {
+              return new Style({
+                image: new Circle({
+                radius: 10,
+                fill: new Fill({
+                    color: '#d43f3a',
+                }),
+                stroke: new Stroke({
+                    width: 1,
+                    color: '#000'
+                }),
+                }),
+                text: new Text({
+                  text: '\uf041',
+                  font: 'normal 18px FontAwesome',
+                  textBaseline: 'Bottom',
+                  fill: new Fill({
+                    color: 'white',
+                  })
+                })
+              });
+            }
+          }),
+          new VectorLayer({
+            source: sCarVec
           }),
         ],
    			controls: [],
@@ -49,7 +76,9 @@ export default function Map({ children, zoom, center, mapMode }) {
 
    		mapObject.setTarget(mapRef.current);
 
-      setVecSource(sVec);
+      setWhSource(sWhVec);
+      setCarSource(sCarVec);
+
       setMap(mapObject);
 
    		return () => mapObject.setTarget(undefined);
@@ -69,12 +98,27 @@ export default function Map({ children, zoom, center, mapMode }) {
 
     useEffect(() => {
       if (!map) return;
-      console.log("positions changed! " + JSON.stringify(positions))
+      console.log("positions changed! " + JSON.stringify(positions));
+
+      points.map( p => {
+        let feature = new Feature({
+            // long, lat according to specification
+            geometry: new Point( transform([p.Long,  p.Lat], 'EPSG:4326', 'EPSG:3857')),
+            type: 1, // TODO: type of a WH
+            id  : p.Id,
+        });
+        feature.setId( p.id );
+        sourceCar.addFeature(feature);
+      });
+
     }, [positions]);
 
     useEffect(() => {
       if (!map) return;
-      console.log("trucks changed! " + JSON.stringify(trucks))
+      console.log("trucks changed! " + JSON.stringify(trucks));
+
+      // here we need add info of coupling car to wh
+
     }, [trucks]);
 
     useEffect(() => {
@@ -86,18 +130,9 @@ export default function Map({ children, zoom, center, mapMode }) {
             // long, lat according to specification
             geometry: new Point( transform([p.Long,  p.Lat], 'EPSG:4326', 'EPSG:3857')),
             id  : p.Id,
-            style: new Style({
-    image: new CircleStyle({
-      radius: 10,
-      fill: null,
-      stroke: new Stroke({
-        color: "magenta",
-      }),
-    }),
-  }),
         });
         feature.setId( p.id );
-        vecSource.addFeature(feature);
+        sourceWh.addFeature(feature);
       });
     }, [points]);
 

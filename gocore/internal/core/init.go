@@ -3,7 +3,9 @@ package core
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
+	"time"
 
 	"ws-core/internal/processor"
 	"ws-core/pkg/config"
@@ -19,13 +21,16 @@ var (
 	mqcfg  config.Rabbit
 	rcfg   config.Redis
 	logcfg config.Log
+	rs     *rand.Rand
 )
 
 func init() {
+	rs = rand.New(rand.NewSource(time.Now().UTC().UnixNano()))
+
 	initLog()
 	initMq()
 	initRedis()
-	processor.Init(rDb)
+	processor.Init(rDb, rs)
 }
 
 func initMq() {

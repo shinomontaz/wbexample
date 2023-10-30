@@ -6,6 +6,9 @@ import { MapContextProvider, useMapContext } from "../contexts/MapContext";
 
 import {PauseCircleIcon, PlusCircleIcon, ArrowPathIcon} from '@heroicons/react/24/outline';
 import {PauseCircleIcon as PauseCircleIconSolid, PlusCircleIcon as PlusCircleIconSolid} from '@heroicons/react/24/solid';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import api from '../api';
 
 const center = [37.5, 55.7];
