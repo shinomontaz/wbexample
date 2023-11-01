@@ -33,6 +33,22 @@ func Do(m common.Message, orig []byte) error {
 			return err
 		}
 		return AddPoint(mess, ctx)
+	case 3:
+		logrus.Debug(fmt.Sprintf("Message of type 3: %v", m))
+		mess := common.MessageGenerateFleet{}
+		err := json.Unmarshal(orig, &mess)
+		if err != nil {
+			logrus.Warn(err)
+			return err
+		}
+		logrus.Debug(fmt.Sprintf("Message of GenerateFleet: %v", mess))
+		return GenerateFleet(mess, ctx)
+	case 1:
+		logrus.Debug(fmt.Sprintf("Message of type 1: %v", m))
+		return StopFleet(ctx)
+	case 4:
+		logrus.Debug(fmt.Sprintf("Message of type 4: %v", m))
+		return StartFleet(ctx)
 	}
 
 	return fmt.Errorf("unknown message type %v", m)

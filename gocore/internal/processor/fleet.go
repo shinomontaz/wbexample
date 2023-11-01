@@ -11,7 +11,6 @@ import (
 )
 
 const KEY_TRUCKS string = "laravel_database_trucks"
-const KEY_POSITIONS string = "laravel_database_positions"
 
 var (
 	truck_counter int
@@ -60,21 +59,23 @@ func setDestination(t *common.Truck, a common.Area) {
 	t.HasDestination = true
 }
 
-func StartFleet(ctx context.Context) {
-	if chan_started {
-		return
+func StartFleet(ctx context.Context) error {
+	if chan_started && len(trucks) > 0 {
+		return nil
 	}
 	ticker := time.NewTicker(2 * time.Second)
 	chan_started = true
 	stop_chan = Run(ticker, ctx)
+	return nil
 }
 
-func StopFleet() {
+func StopFleet(ctx context.Context) error {
 	if !chan_started {
-		return
+		return nil
 	}
 	stop_chan <- struct{}{}
 	chan_started = false
+	return nil
 }
 
 func Run(ticker *time.Ticker, ctx context.Context) chan struct{} {

@@ -4,7 +4,7 @@ import { fromLonLat, toLonLat, get } from "ol/proj";
 import Map from '../components/Map'
 import { MapContextProvider, useMapContext } from "../contexts/MapContext";
 
-import {PauseCircleIcon, PlusCircleIcon, ArrowPathIcon} from '@heroicons/react/24/outline';
+import {PauseCircleIcon, PlusCircleIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon} from '@heroicons/react/24/outline';
 import {PauseCircleIcon as PauseCircleIconSolid, PlusCircleIcon as PlusCircleIconSolid} from '@heroicons/react/24/solid';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -21,13 +21,23 @@ const Landmap = () => {
       api.pause();
     }
 
-    const onUpdate = async () => {
+    const onUpdatePoints = async () => {
       await api.getPoints( ).then( (points) => {
           console.log( "Points received: " + JSON.stringify(points) );
           setPoints(points);
         }
       ).catch( (err) => {
         console.log( "getPoints exception " + JSON.stringify(err) );
+        }
+      );
+    }
+    const onUpdateFleet = async () => {
+      await api.getTrucks( ).then( (trucks) => {
+          console.log( "Trucks received: " + JSON.stringify(trucks) );
+          setPoints(points);
+        }
+      ).catch( (err) => {
+        console.log( "getTrucks exception " + JSON.stringify(err) );
         }
       );
     }
@@ -77,10 +87,18 @@ const Landmap = () => {
                 <button
                   type="button"
                   className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                  onClick={()=> onUpdate()}
+                  onClick={()=> onUpdatePoints()}
                 >
-                  <span className="sr-only">Update</span>
+                  <span className="sr-only">Update points</span>
                   <ArrowPathIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                  onClick={()=> onUpdatePoints()}
+                >
+                  <span className="sr-only">Update fleet</span>
+                  <ArrowPathRoundedSquareIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
 

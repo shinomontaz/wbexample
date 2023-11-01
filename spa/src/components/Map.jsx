@@ -50,7 +50,7 @@ export default function Map({ children, zoom, center, mapMode }) {
                 }),
                 }),
                 text: new Text({
-                  text: '\uf041',
+                  text: '\uf468',
                   font: 'normal 18px FontAwesome',
                   textBaseline: 'Bottom',
                   fill: new Fill({
@@ -61,7 +61,29 @@ export default function Map({ children, zoom, center, mapMode }) {
             }
           }),
           new VectorLayer({
-            source: sCarVec
+            source: sCarVec,
+            style: (feature) => {
+              return new Style({
+                image: new Circle({
+                radius: 10,
+                fill: new Fill({
+                    color: '#d43f3a',
+                }),
+                stroke: new Stroke({
+                    width: 1,
+                    color: '#000'
+                }),
+                }),
+                text: new Text({
+                  text: '\uf48b',
+                  font: 'normal 16px FontAwesome',
+                  textBaseline: 'Bottom',
+                  fill: new Fill({
+                    color: 'white',
+                  })
+                })
+              });
+            }
           }),
         ],
    			controls: [],

@@ -34,9 +34,9 @@ class CommandsController extends JsonController {
     public function PauseFleet(Request $request)
     {
         //key here will be a "laravel_database_points"
-        Redis::set('points', json_encode([ 
-            ['id' => 211268, 'lat' => 55.547815000, 'long' => 37.550307000]
-        ]));
+//        Redis::set('points', json_encode([ 
+//            ['id' => 211268, 'lat' => 55.547815000, 'long' => 37.550307000]
+//        ]));
         $message = [
             'type' => 1,
         ];
@@ -45,6 +45,7 @@ class CommandsController extends JsonController {
     
     public function StartFleet(Request $request)
     {
+        //{"type": 4}
         $message = [
             'type' => 4,
         ];
@@ -65,8 +66,8 @@ class CommandsController extends JsonController {
     
     public function GenerateFleet(Request $request)
     {
-        //{num: 10, square: [37.43133544921874, 55.661286579672606, 37.56866455078125, 55.73867511243941]}
-        //long: 37.43133544921874, lat: 55.661286579672606
+        echo "sdfsdf sdfsdf";
+        //{"num": 10, "type": 3, "area": {"Min": [37.43133544921874, 55.661286579672606], "Max": [37.56866455078125, 55.73867511243941]}}
         $message = [
             'type' => 3,
             'num' => $request->num,
