@@ -6,10 +6,16 @@ import (
 )
 
 type Rabbit struct {
-	Host        string `env:"RABBIT_HOST" envDefault:"127.0.0.1"`
-	Port        int    `env:"RABBIT_PORT" envDefault:"5672"`
-	User        string `env:"RABBIT_USER" envDefault:"user"`
-	Pass        string `env:"RABBIT_PASS" envDefault:"qwe"`
+	Host string `env:"RABBIT_HOST" envDefault:"127.0.0.1"`
+	Port int    `env:"RABBIT_PORT" envDefault:"5672"`
+	//	- RABBIT_USER=queue-user
+	//	- RABBIT_PASS=DmJsTdn5BVA!paM
+	// User        string `env:"RABBIT_USER" envDefault:"user"`
+	// Pass        string `env:"RABBIT_PASS" envDefault:"qwe"`
+
+	User string `env:"RABBIT_USER" envDefault:"queue-user"`
+	Pass string `env:"RABBIT_PASS" envDefault:"DmJsTdn5BVA!paM"`
+
 	Vhost       string `env:"RABBIT_VHOST" envDefault:"/"`
 	Listenqueue string `env:"RABBIT_QUEUE" envDefault:"cmd"`
 }
@@ -18,6 +24,10 @@ type Redis struct {
 	Host string `env:"REDIS_HOST" envDefault:"127.0.0.1"`
 	Port int    `env:"REDIS_PORT" envDefault:"6379"`
 	Db   int    `env:"REDIS_DB" envDefault:1`
+}
+
+type Osrm struct {
+	OsrmUrl string `env:"OSRM_URL" envDefault:"127.0.0.1:5000"`
 }
 
 type Log struct {

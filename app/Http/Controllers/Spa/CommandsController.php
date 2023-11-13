@@ -52,10 +52,18 @@ class CommandsController extends JsonController {
         return $this->_sendMessage($message);
     }
     
+    public function Solve(Request $request)
+    {
+        $message = [
+            'type' => 5,
+        ];
+        return $this->_sendMessage($message);
+    }
+    
     public function AddPoint(Request $request)
     {
         //{location: [37.313919067382805, 55.879899669135995]}
-//        Log::info( print_r($request->location, true) );
+        Log::info( print_r($request->location, true) );
         $message = [
             'type' => 2,
             'long' => $request->location[0], // in SPA we use toLonLat function
@@ -66,7 +74,6 @@ class CommandsController extends JsonController {
     
     public function GenerateFleet(Request $request)
     {
-        echo "sdfsdf sdfsdf";
         //{"num": 10, "type": 3, "area": {"Min": [37.43133544921874, 55.661286579672606], "Max": [37.56866455078125, 55.73867511243941]}}
         $message = [
             'type' => 3,
@@ -81,8 +88,6 @@ class CommandsController extends JsonController {
     
     private function _sendMessage($message): JsonResponse {
         $message = json_encode($message);
-        print_r($message);
-        die();
         try {
             $this->mqService->publish($message, 'wb', 'cmd');
         } catch ( \Exception $e ) {

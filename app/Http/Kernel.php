@@ -46,6 +46,7 @@ class Kernel extends HttpKernel
         
         'spa' => [
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Illuminate\Http\Middleware\HandleCors::class,
         ],
     ];
 

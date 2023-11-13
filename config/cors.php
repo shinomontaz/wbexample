@@ -15,7 +15,9 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'spa/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    
+//     'paths' => ['api/*', 'spa/*', 'sanctum/csrf-cookie'], // no need for this: we add cors headers in NGINX
 
     'allowed_methods' => ['*'],
 
@@ -29,6 +31,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];

@@ -25,6 +25,7 @@ export const MapContextProvider = ({ children }) => {
   const [map, setMap] = useState(null);
   const [sourceWh, setWhSource] = useState(null);
   const [sourceCar, setCarSource] = useState(null);
+  const [sourceLink, setLinkSource] = useState(null);
   const [mapMode, setMode] = useState(false);
   const [viewport, setViewport] = useState(null);
 
@@ -41,6 +42,8 @@ export const MapContextProvider = ({ children }) => {
        setWhSource,
        sourceCar,
        setCarSource,
+       sourceLink,
+       setLinkSource,
        viewport,
        setViewport,
        mapMode,

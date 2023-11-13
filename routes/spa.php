@@ -27,9 +27,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::controller(CommandsController::class)->group(function(){
+    Route::post('start-fleet', 'StartFleet')->name('start-fleet');
     Route::post('pause-fleet', 'PauseFleet')->name('pause-fleet');
     Route::post('add-point', 'AddPoint')->name('add-point');
     Route::post('generate-fleet', 'GenerateFleet')->name('generate-fleet');
+    Route::post('solve', 'Solve')->name('solve');
 });
 
 Route::controller(DataController::class)->group(function(){

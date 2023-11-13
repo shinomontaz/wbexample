@@ -4,8 +4,8 @@ import { fromLonLat, toLonLat, get } from "ol/proj";
 import Map from '../components/Map'
 import { MapContextProvider, useMapContext } from "../contexts/MapContext";
 
-import {PauseCircleIcon, PlusCircleIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon} from '@heroicons/react/24/outline';
-import {PauseCircleIcon as PauseCircleIconSolid, PlusCircleIcon as PlusCircleIconSolid} from '@heroicons/react/24/solid';
+import {PlayCircleIcon, PauseCircleIcon, PlusCircleIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ExclamationTriangleIcon} from '@heroicons/react/24/outline';
+import {PlusCircleIcon as PlusCircleIconSolid} from '@heroicons/react/24/solid';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -15,8 +15,11 @@ const center = [37.5, 55.7];
 const zoom = 10;
 
 const Landmap = () => {
-    const { map, viewport, mapMode, setMode, setPoints } = useMapContext();
+    const { map, viewport, mapMode, setMode, setPoints, setTrucks } = useMapContext();
 
+    const onStartFleet = () => {
+      api.start();
+    }
     const onPauseFleet = () => {
       api.pause();
     }
@@ -34,7 +37,7 @@ const Landmap = () => {
     const onUpdateFleet = async () => {
       await api.getTrucks( ).then( (trucks) => {
           console.log( "Trucks received: " + JSON.stringify(trucks) );
-          setPoints(points);
+          setTrucks(trucks);
         }
       ).catch( (err) => {
         console.log( "getTrucks exception " + JSON.stringify(err) );
@@ -49,6 +52,10 @@ const Landmap = () => {
     const onPointAddMode = () => {
       if (!map || Object.keys(map).length == 0) return;
       setMode(!mapMode);
+    }
+
+    const onSolve = () => {
+      api.solve();
     }
 
     return (
@@ -68,6 +75,14 @@ const Landmap = () => {
                 >
                   Generate trucks
                 </a>
+                <button
+                  type="button"
+                  className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                  onClick={()=> onStartFleet()}
+                >
+                  <span className="sr-only">Start fleet</span>
+                  <PlayCircleIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
                 <button
                   type="button"
                   className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
@@ -95,10 +110,19 @@ const Landmap = () => {
                 <button
                   type="button"
                   className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                  onClick={()=> onUpdatePoints()}
+                  onClick={()=> onUpdateFleet()}
                 >
                   <span className="sr-only">Update fleet</span>
                   <ArrowPathRoundedSquareIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
+
+                <button
+                  type="button"
+                  className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                  onClick={()=> onSolve()}
+                >
+                  <span className="sr-only">Solve!</span>
+                  <ExclamationTriangleIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
 

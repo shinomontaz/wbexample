@@ -28,9 +28,10 @@ type Area struct {
 	Max []float64 `json:"max"`
 }
 type Point struct {
-	Id   int     `json: id`
-	Lat  float64 `json: "lat"`
-	Long float64 `json: "long"`
+	Id      int     `json: id`
+	Lat     float64 `json: "lat"`
+	Long    float64 `json: "long"`
+	TruckId int     `json: truckid`
 }
 
 type Coord struct {
@@ -43,6 +44,7 @@ type Truck struct {
 	Coord          `json: "coord"`
 	Destination    Coord
 	HasDestination bool
+	PointId        int `json: whid`
 }
 
 type Position struct {
